@@ -1,0 +1,237 @@
+from tkinter import *
+import pycountry
+from PIL import ImageTk, Image
+import random
+import time
+from tkinter import messagebox
+
+# Country(alpha_2='VN', alpha_3='VNM', common_name='Vietnam', name='Viet Nam', numeric='704', official_name='Socialist Republic of Viet Nam'),
+"""...................data and info..................."""
+
+root = Tk()
+root.title("Guess the flag")
+
+countryListRaw = list(pycountry.countries)
+
+countryDict = {'Aruba': 'aw', 'Afghanistan': 'af', 'Angola': 'ao', 'Anguilla': 'ai', 'Åland Islands': 'ax', 'Albania': 'al',
+               'Andorra': 'ad', 'United Arab Emirates': 'ae', 'Argentina': 'ar', 'Armenia': 'am', 'American Samoa': 'as',
+               'Antarctica': 'aq', 'French Southern Territories': 'tf', 'Antigua and Barbuda': 'ag', 'Australia': 'au',
+               'Austria': 'at', 'Azerbaijan': 'az', 'Burundi': 'bi', 'Belgium': 'be', 'Benin': 'bj',
+               'Bonaire, Sint Eustatius and Saba': 'bq', 'Burkina Faso': 'bf', 'Bangladesh': 'bd', 'Bulgaria': 'bg',
+               'Bahrain': 'bh', 'Bahamas': 'bs', 'Bosnia and Herzegovina': 'ba', 'Saint Barthélemy': 'bl', 'Belarus': 'by',
+               'Belize': 'bz', 'Bermuda': 'bm', 'Bolivia': 'bo', 'Brazil': 'br', 'Barbados': 'bb', 'Brunei Darussalam': 'bn',
+               'Bhutan': 'bt', 'Bouvet Island': 'bv', 'Botswana': 'bw', 'Central African Republic': 'cf', 'Canada': 'ca',
+               'Cocos (Keeling) Islands': 'cc', 'Switzerland': 'ch', 'Chile': 'cl', 'China': 'cn', "Côte d'Ivoire": 'ci',
+               'Cameroon': 'cm', 'Congo, The Democratic Republic of the': 'cd', 'Congo': 'cg', 'Cook Islands': 'ck', 'Colombia': 'co',
+               'Comoros': 'km', 'Cabo Verde': 'cv', 'Costa Rica': 'cr', 'Cuba': 'cu', 'Curaçao': 'cw', 'Christmas Island': 'cx',
+               'Cayman Islands': 'ky', 'Cyprus': 'cy', 'Czechia': 'cz', 'Germany': 'de', 'Djibouti': 'dj',
+               'Dominica': 'dm', 'Denmark': 'dk', 'Dominican Republic': 'do', 'Algeria': 'dz', 'Ecuador': 'ec',
+               'Egypt': 'eg', 'Eritrea': 'er', 'Western Sahara': 'eh', 'Spain': 'es', 'Estonia': 'ee', 'Ethiopia': 'et',
+               'Finland': 'fi', 'Fiji': 'fj', 'Falkland Islands (Malvinas)': 'fk', 'France': 'fr', 'Faroe Islands': 'fo',
+               'Micronesia, Federated States of': 'fm', 'Gabon': 'ga', 'United Kingdom': 'gb', 'Georgia': 'ge', 'Guernsey': 'gg',
+               'Ghana': 'gh', 'Gibraltar': 'gi', 'Guinea': 'gn', 'Guadeloupe': 'gp', 'Gambia': 'gm', 'Guinea-Bissau': 'gw',
+               'Equatorial Guinea': 'gq', 'Greece': 'gr', 'Grenada': 'gd', 'Greenland': 'gl', 'Guatemala': 'gt', 'French Guiana': 'gf',
+               'Guam': 'gu', 'Guyana': 'gy', 'Hong Kong': 'hk', 'Heard Island and McDonald Islands': 'hm', 'Honduras': 'hn',
+               'Croatia': 'hr', 'Haiti': 'ht', 'Hungary': 'hu', 'Indonesia': 'id', 'Isle of Man': 'im', 'India': 'in',
+               'British Indian Ocean Territory': 'io', 'Ireland': 'ie', 'Iran, Islamic Republic of': 'ir', 'Iraq': 'iq', 'Iceland': 'is',
+               'Israel': 'il', 'Italy': 'it', 'Jamaica': 'jm', 'Jersey': 'je', 'Jordan': 'jo', 'Japan': 'jp',
+               'Kazakhstan': 'kz', 'Kenya': 'ke', 'Kyrgyzstan': 'kg', 'Cambodia': 'kh', 'Kiribati': 'ki',
+               'Saint Kitts and Nevis': 'kn', 'Korea, Republic of': 'kr', 'Kuwait': 'kw',
+               "Lao People's Democratic Republic": 'la', 'Lebanon': 'lb', 'Liberia': 'lr', 'Libya': 'ly',
+               'Saint Lucia': 'lc', 'Liechtenstein': 'li', 'Sri Lanka': 'lk', 'Lesotho': 'ls', 'Lithuania': 'lt',
+               'Luxembourg': 'lu', 'Latvia': 'lv', 'Macao': 'mo', 'Saint Martin (French part)': 'mf', 'Morocco': 'ma',
+               'Monaco': 'mc', 'Moldova': 'md', 'Madagascar': 'mg', 'Maldives': 'mv', 'Mexico': 'mx', 'Marshall Islands': 'mh',
+               'North Macedonia': 'mk', 'Mali': 'ml', 'Malta': 'mt', 'Myanmar': 'mm', 'Montenegro': 'me', 'Mongolia': 'mn',
+               'Northern Mariana Islands': 'mp', 'Mozambique': 'mz', 'Mauritania': 'mr', 'Montserrat': 'ms', 'Martinique': 'mq',
+               'Mauritius': 'mu', 'Malawi': 'mw', 'Malaysia': 'my', 'Mayotte': 'yt', 'Namibia': 'na', 'New Caledonia': 'nc',
+               'Niger': 'ne', 'Norfolk Island': 'nf', 'Nigeria': 'ng', 'Nicaragua': 'ni', 'Niue': 'nu', 'Netherlands': 'nl',
+               'Norway': 'no', 'Nepal': 'np', 'Nauru': 'nr', 'New Zealand': 'nz', 'Oman': 'om', 'Pakistan': 'pk',
+               'Panama': 'pa', 'Pitcairn': 'pn', 'Peru': 'pe', 'Philippines': 'ph', 'Palau': 'pw',
+               'Papua New Guinea': 'pg', 'Poland': 'pl', 'Puerto Rico': 'pr', "Korea, Democratic People's Republic of": 'kp',
+               'Portugal': 'pt', 'Paraguay': 'py', 'Palestine, State of': 'ps', 'French Polynesia': 'pf', 'Qatar': 'qa',
+               'Réunion': 're', 'Romania': 'ro', 'Russian Federation': 'ru', 'Rwanda': 'rw', 'Saudi Arabia': 'sa',
+               'Sudan': 'sd', 'Senegal': 'sn', 'Singapore': 'sg', 'South Georgia and the South Sandwich Islands': 'gs',
+               'Saint Helena, Ascension and Tristan da Cunha': 'sh', 'Svalbard and Jan Mayen': 'sj',
+               'Solomon Islands': 'sb', 'Sierra Leone': 'sl', 'El Salvador': 'sv', 'San Marino': 'sm',
+               'Somalia': 'so', 'Saint Pierre and Miquelon': 'pm', 'Serbia': 'rs', 'South Sudan': 'ss',
+               'Sao Tome and Principe': 'st', 'Suriname': 'sr', 'Slovakia': 'sk', 'Slovenia': 'si', 'Sweden': 'se',
+               'Eswatini': 'sz', 'Sint Maarten (Dutch part)': 'sx', 'Seychelles': 'sc',
+               'Syrian Arab Republic': 'sy', 'Turks and Caicos Islands': 'tc', 'Chad': 'td',
+               'Togo': 'tg', 'Thailand': 'th', 'Tajikistan': 'tj', 'Tokelau': 'tk', 'Turkmenistan': 'tm',
+               'Timor-Leste': 'tl', 'Tonga': 'to', 'Trinidad and Tobago': 'tt', 'Tunisia': 'tn',
+               'Turkey': 'tr', 'Tuvalu': 'tv', 'Taiwan': 'tw', 'Tanzania': 'tz', 'Uganda': 'ug', 'Ukraine': 'ua',
+               'United States Minor Outlying Islands': 'um', 'Uruguay': 'uy', 'United States': 'us',
+               'Uzbekistan': 'uz', 'Holy See (Vatican City State)': 'va', 'Saint Vincent and the Grenadines': 'vc',
+               'Venezuela': 've', 'Virgin Islands, British': 'vg', 'Virgin Islands, U.S.': 'vi', 'Vietnam': 'vn',
+               'Vanuatu': 'vu', 'Wallis and Futuna': 'wf', 'Samoa': 'ws', 'Yemen': 'ye', 'South Africa': 'za', 'Zambia': 'zm',
+               'Zimbabwe': 'zw'}
+
+ISOCodes = []
+[ISOCodes.append(countryDict[country]) for country in countryDict]
+
+Countries = []
+[Countries.append(country) for country in countryDict]
+
+# for country in countryListRaw:
+#     try:
+#         countryName = str(country.common_name)
+#     except AttributeError:
+#         countryName = str(country.name)
+#     countryISOCode = (str(country.alpha_2)).lower()
+#     countryDict.update([(countryName, countryISOCode)])
+
+# image0 = ImageTk.PhotoImage(Image.open("C:/Users/nellissery/Desktop/download.jpg"))
+
+ROWS = [1, 2, 1, 2]
+COLUMNS = [0, 1, 0, 1]
+
+POSITIONS = [[1, 0], [2, 0], [1, 1], [2, 1]]
+
+assignedCoordinates = []
+coordinate= []
+
+x = 2
+
+imageLinks = []
+for ISOCode in ISOCodes:
+    imageLinks.append(ImageTk.PhotoImage(Image.open(ISOCode + ".png")))
+print(len(imageLinks))
+
+            # (ROW, COLUMN)
+# POSITIONS = [(1, 0), (2, 0), (1, 1), (2, 1)]
+
+""".......................Functions..............................."""
+
+
+def coordinateManager(axis):
+    global POSITIONS, coordinate, assignedCoordinates, x
+    if x == 2:
+        coordinate.clear()
+        x = 0
+        coordinate = random.choice(POSITIONS)
+        POSITIONS.remove(coordinate)
+    if axis == "row":
+        x += 1
+        if POSITIONS == []:
+            POSITIONS = [[1, 0], [2, 0], [1, 1], [2, 1]]
+        return coordinate[0]
+    if axis == "column":
+        x += 1
+        if POSITIONS == []:
+            POSITIONS = [[1, 0], [2, 0], [1, 1], [2, 1]]
+        return coordinate[1]
+
+def countdown(seconds):
+  while seconds > 0:
+    seconds -= 1
+    time.sleep(1)
+
+def resetImage(stringCommand):
+    global flagLabel, option1Button, option2Button, option3Button, option4Button, CountryNumber
+    answerNumber = random.choice(CountryNumber)
+    del CountryNumber[indexOf(answerNumber, CountryNumber)]
+    print(CountryNumber, len(CountryNumber))
+
+    if stringCommand == "NewFlag":
+        flag = imageLinks[answerNumber]
+        flagLabel.grid_forget()
+        option1Button.grid_forget()
+        option2Button.grid_forget()
+        option3Button.grid_forget()
+        option4Button.grid_forget()
+        flagLabel = Label(root, image=flag)
+        option1Button = Button(root, text=Countries[answerNumber], command=lambda: resetImage("CorrectOption"),
+                               padx=30, pady=20)
+        option2Button = Button(root, text=Countries[random.choice(CountryNumber)],
+                               command=lambda: resetImage("WrongOption"), padx=30, pady=20)
+        option3Button = Button(root, text=Countries[random.choice(CountryNumber)],
+                               command=lambda: resetImage("WrongOption"), padx=30, pady=20)
+        option4Button = Button(root, text=Countries[random.choice(CountryNumber)],
+                               command=lambda: resetImage("WrongOption"), padx=30, pady=20)
+        flagLabel.grid(row=0, column=0, columnspan=2)
+        option1Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option2Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option3Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option4Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+
+    if stringCommand == "CorrectOption":
+        flag = imageLinks[answerNumber]
+        flagLabel.grid_forget()
+        option1Button.grid_forget()
+        option2Button.grid_forget()
+        option3Button.grid_forget()
+        option4Button.grid_forget()
+        flagLabel = Label(root, image=flag)
+        option1Button = Button(root, text=Countries[answerNumber], command=lambda: resetImage("CorrectOption"), padx=30,
+                               pady=20)
+        option2Button = Button(root, text=Countries[random.choice(CountryNumber)],
+                               command=lambda: resetImage("WrongOption"), padx=30, pady=20)
+        option3Button = Button(root, text=Countries[random.choice(CountryNumber)],
+                               command=lambda: resetImage("WrongOption"), padx=30, pady=20)
+        option4Button = Button(root, text=Countries[random.choice(CountryNumber)],
+                               command=lambda: resetImage("WrongOption"), padx=30, pady=20)
+        flagLabel.grid(row=0, column=0, columnspan=2)
+        option1Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option2Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option3Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option4Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+
+    if stringCommand == "WrongOption":
+        option1Button.grid_forget()
+        option2Button.grid_forget()
+        option3Button.grid_forget()
+        option4Button.grid_forget()
+        option1Button = Button(root, text="Wrong", bg= "Crimson", padx=30,
+                               pady=20)
+        option2Button = Button(root, text="Wrong",
+                               bg="Crimson", padx=30, pady=20,)
+        option3Button = Button(root, text="Wrong",
+                               bg="Crimson", padx=30, pady=20,)
+        option4Button = Button(root, text="Wrong",
+                               bg="Crimson", padx=30, pady=20,)
+        option1Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option2Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option3Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+        option4Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+
+        defeat_message = messagebox.showerror("You Lose", "you have guessed wrong.....")
+        root.quit()
+
+
+def indexOf(NumberToFindIndexOf, List):
+    for ele in list(range(0, len(List))):
+        if List[ele] == NumberToFindIndexOf:
+                print(ele, NumberToFindIndexOf)
+                return ele
+
+""".................GUI......................"""
+
+
+
+# elements are created
+CountryNumber = list(range(0, len(imageLinks)))
+answerNumber = random.choice(CountryNumber)
+del CountryNumber[indexOf(answerNumber, CountryNumber)]
+print(CountryNumber)
+
+flag = imageLinks[answerNumber]
+flagLabel = Label(root, image=flag)
+
+exitButton = Button(root, text="Quit", command=root.quit, padx=30, pady=20)
+resetFlagButton = Button(root, text="New Flag", command=lambda : resetImage("NewFlag"), padx=30, pady=20)
+option1Button = Button(root, text=Countries[answerNumber], command=lambda : resetImage("CorrectOption"), padx=30, pady=20)
+option2Button = Button(root, text=Countries[random.choice(CountryNumber)],command=lambda : resetImage("WrongOption"), padx=30, pady=20)
+option3Button = Button(root, text=Countries[random.choice(CountryNumber)],command=lambda : resetImage("WrongOption"), padx=30, pady=20)
+option4Button = Button(root, text=Countries[random.choice(CountryNumber)],command=lambda : resetImage("WrongOption"), padx=30, pady=20)
+
+# elements are placed
+flagLabel.grid(row=0, column=0, columnspan=2)
+option1Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+option2Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+option3Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+option4Button.grid(row=coordinateManager("row"), column=coordinateManager("column"))
+exitButton.grid(row=3, column=0, sticky=W)
+resetFlagButton.grid(row=3, column=1, sticky=E)
+
+
+root.mainloop()
